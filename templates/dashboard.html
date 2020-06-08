@@ -1,0 +1,93 @@
+{% extends 'base.html' %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+{% if user.is_authenticated %}
+
+
+<div class="container">
+<nav class="navbar navbar-light" style="background-color: #e3f2fd;">
+  <a href="{% url 'Neural_Network' %}" class="btn btn-outline-secondary">
+            Neural Network</a>
+</nav>
+
+<p></p>
+  <div class="row align-items-center">
+  
+			
+    <div class="col-sm">
+         <form>   
+			<img src="https://miro.medium.com/max/1875/1*bhFifratH9DjKqMBTeQG5A.gif" class="rounded" alt="Rounded Image" style="width:1080px; height:600px;">
+		</form>
+    </div>
+  </div>
+</div>
+</br>
+<p></p>
+</br>
+<p></p>
+
+<div class="container">
+<nav class="navbar navbar-light" style="background-color: #e3f2fd;">
+  <a href="{% url 'Matrix_Factorization' %}" class="btn btn-outline-secondary">
+            Matrix Factorization</a>
+</nav>
+
+  <div class="row align-items-center">
+	
+    <div class="col-sm">
+      <form class="form-inline ml-auto">
+			
+			<img src="https://buildingrecommenders.files.wordpress.com/2015/11/matrix-factorisation.png?w=1024">
+          </form>
+    </div>
+  </div>
+</div>
+
+
+<div class="container">
+<nav class="navbar navbar-light" style="background-color: #e3f2fd;">
+</nav>
+
+  <div class="row align-items-center">
+
+    <div class="col-sm">
+      <form class="form-inline ml-auto">
+
+			<img src="https://buildingrecommenders.files.wordpress.com/2015/11/matrix-factorisation.png?w=1024">
+          </form>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+</br> </br> </br> </br>
+<div class="container">
+   <nav class="navbar navbar-light" style="background-color: #e3f2fd;">
+            <a href="{% url 'Scratch_Pad' %}" class="btn btn-outline-secondary">
+            Scratch Pad</a>
+	</nav>
+<p></p> 
+
+  <div class="row align-items-center">
+    <div class="col-sm">
+	  <form class="form-inline ml-auto">
+			<img src="https://blog.openmined.org/content/images/2019/02/gif_FL_train.gif" class="rounded" alt="Rounded Image" style="width:1080px; height:600px;">
+          </form>
+    </div>
+  </div>
+</div>
+</br> </br> </br> </br>
+
+
+{% else %}
+  <p>You are not authorized to view this page.</p>
+  <a href="{% url 'login' %}">login</a>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,269 @@
+{% extends 'base.html' %}
+
+{% block title %}Matrix Factorization{% endblock %}
+
+{% block content %}
+
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+body
+<div id="loading">
+  <img id="loading-image" src="images/ajax-loader.gif" alt="Loading..." />
+</div>
+{
+  font-family: Verdana;
+  color: grey;
+}
+
+.split {
+  height: 90%;
+  width: 50%;
+  position: fixed;
+  z-index: 1;
+  top: 2;
+  overflow-x: hidden;
+  padding-top: 20px;
+}
+
+.left {
+  left: 0;
+  background-color: white;
+}
+
+.right {
+  right: 0;
+  background-color: white;
+}
+
+.centered {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+}
+
+.left_text {
+  left: 10;
+}
+
+.centered img {
+  width: 150px;
+  border-radius: 50%;
+}
+.formcontainer {
+      text-align: left;
+      margin: 0px 25px 12px;
+	  width: 100%;
+	  border-color: #e3f2fd;
+}
+
+div {
+  text-align: justify;
+  text-justify: inter-word;
+}
+div.a {
+  text-indent: 50px;
+}
+
+div.b {
+  text-indent: 30px;}
+
+
+
+
+</style>
+</head>
+<body>
+
+
+<div class="split left">
+<div class="formcontainer">
+<nav class="navbar navbar-light" style="background-color: #e3f2fd;">
+  
+  <h1 href="{% url 'Matrix_Factorization' %}" class="btn btn-outline-secondary">
+            Matrix Factorization</h1>
+</nav>
+<br>
+<div class="row align-items-center">
+	
+    <div class="col-sm">
+      <form action="/matrixFactorization/" method="post">
+	      {% csrf_token %}
+          <label class="my-1 mr-2" for="dataset">Select Dataset</label><br>
+          <select class="custom-select my-1 mr-sm-2 col-md-11" id="dataset" name="dataset" required>
+            <option selected>Choose...</option>
+            <option value="ratings100k.dat">Movielens 100k</option>
+            <option value="ratings1M.dat">Movielens 1M</option>
+          </select>
+		  <br>
+		  <br>
+		   <a>Select Train-Test Split</a>
+		   <br>
+		   <br>
+		   <input type="radio" id="radio1" name="train_perc" value="0.7">
+           <label for="radio1">70% for training, 30% for testing</label><br>
+           <input type="radio" id="radio2" name="train_perc" value="0.75">
+           <label for="radio2">75% for training, 25% for testing</label><br>
+           <input type="radio" id="radio3" name="train_perc" value="0.8">
+           <label for="radio3">80% for training, 20% for testing</label>
+
+		  <br>
+		  <br>
+          <div class="form-group col-md-11">
+            <label for="n_sim_users">Enter number of similar users to consider</label><br>
+            <input type="text" class="form-control" id="n_sim_users" name="n_sim_users" align="left" required>
+          </div>
+		  <br>
+          <div class="form-group col-md-11">
+            <label for="n_rec">Enter number of items to recommend</label><br>
+            <input type="text" class="form-control" id="n_rec" name="n_rec" required>
+          </div>
+		  <br>
+          <div class="form-group row col-md-3">
+            <div class="col-sm-10">
+              <button type="submit" class="btn btn-primary">Run Model</button>
+            </div>
+
+
+          </div>
+
+		      <br>
+		</form>
+</div>
+</div>
+</div>
+</div>
+
+
+<div class="split right">
+<div class="formcontainer" >
+<nav class="navbar navbar-light" style="background-color: #e3f2fd;" padding="100px">
+  <h1 href="{% url 'Matrix_Factorization' %}" class="btn btn-outline-secondary">
+            Output</h1>
+</nav>
+<br>
+
+
+</div>
+<script src="https://code.highcharts.com/highcharts.js"></script>
+<script src="https://code.highcharts.com/modules/data.js"></script>
+<script src="https://code.highcharts.com/modules/exporting.js"></script>
+<script src="https://code.highcharts.com/modules/export-data.js"></script>
+<script src="https://code.highcharts.com/modules/accessibility.js"></script>
+<!--  -->
+<div id="container" style="width: 600px; height: 300px; margin: 1em; border: 1px ghost white"></div>
+
+<script language="JavaScript">
+document.addEventListener('DOMContentLoaded', function () {
+
+        var chart1 = Highcharts.chart({
+    chart: {
+        renderTo: 'container',
+        type: 'bar',
+width: 550
+    },
+
+    title: {
+        text: 'Evaluation Metrics'
+    },
+    xAxis: {
+        categories: ['Precision', 'Recall', 'Coverage']
+
+    },
+    yAxis: {
+        title: {
+            text: 'Scores'
+        }
+    },
+      credits: {
+    enabled: false
+  },
+
+tooltip: {
+shared: true,
+useHTML: true
+},
+    series: [{
+        name: 'system users 1',
+        data: {{graph_data1}}
+    },{
+        name: 'your users',
+        data: {{graph_data2}}
+    },{
+        name: 'system users 2',
+        data: {{graph_data3}}
+    }
+],
+exporting: {
+         showTable:true ,
+         }
+});
+    });
+
+
+</script>
+
+
+    <br><br><br>
+
+<div id="container2" style="width: 600px; height: 300px; margin: 1em; border: 1px ghost white"></div>
+
+<script language="JavaScript">
+document.addEventListener('DOMContentLoaded', function () {
+
+        var chart1 = Highcharts.chart({
+    chart: {
+        renderTo: 'container2',
+        type: 'line',
+width: 550
+    },
+
+    title: {
+        text: 'Precision Recall Curve'
+    },
+    xAxis: {
+       title: {
+       text: 'Recall' },
+       categories: {{rec}}
+
+    },
+    yAxis: {
+        title: {
+            text: 'Precision'
+        }
+    },
+      credits: {
+    enabled: false
+  },
+
+tooltip: {
+shared: true,
+useHTML: true
+},
+    series: [{
+        name: 'Precision Recall Curve',
+        data: {{prec}}
+    }
+],
+
+});
+    });
+
+</script>
+<br>
+
+
+
+    <br>
+<br>
+
+</div>
+</div>
+
+</body>
+
+
+
+{% endblock %}
